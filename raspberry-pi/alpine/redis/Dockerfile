@@ -9,7 +9,7 @@ RUN apk add --no-cache redis && \
 
 RUN [ "cross-build-end" ]
 
-COPY redis*.conf /etc/
+COPY raspberry-pi/alpine/redis/redis*.conf /etc/
 
 EXPOSE 6379
 CMD ["redis-server", "/etc/redis.conf"]

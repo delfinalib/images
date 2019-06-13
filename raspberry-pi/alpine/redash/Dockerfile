@@ -9,8 +9,8 @@ RUN wget https://github.com/getredash/redash/archive/v${VERSION}.tar.gz \
     && rm v${VERSION}.tar.gz \
     && apk add --no-cache git \
     && cd /redash-${VERSION} \
-    && rm package-lock.json
-RUN npm install \
+    && rm package-lock.json \
+    && npm install \
     && npm run build \
     && rm -rf node_modules \
     && mv /redash-${VERSION} /redash

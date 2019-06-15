@@ -1,4 +1,4 @@
-FROM metabase/metabase as prebuilt
+FROM metabase/metabase:v0.32.8 as prebuilt
 
 FROM balenalib/raspberry-pi-alpine-openjdk as runner
 
@@ -9,20 +9,14 @@ WORKDIR /app
 ENV FC_LANG en-US
 ENV LC_CTYPE en_US.UTF-8
 
-# dependencies
-RUN apk add --update bash ttf-dejavu fontconfig
-
 # add fixed cacerts
 COPY --from=prebuilt /usr/lib/jvm/default-jvm/jre/lib/security/cacerts /usr/lib/jvm/default-jvm/jre/lib/security/cacerts
-
-# add Metabase script and uberjar
-RUN mkdir -p bin target/uberjar
-COPY --from=prebuilt /app/target/uberjar/metabase.jar /app/target/uberjar/
-COPY --from=prebuilt /app/bin/start /app/bin/
+COPY --from=prebuilt /app/ /app/
 
 # create the plugins directory, with writable permissions
-RUN mkdir -p /plugins
-RUN chmod a+rwx /plugins
+RUN apk add --update bash ttf-dejavu fontconfig \
+    && mkdir -p /plugins \
+    && chmod a+rwx /plugins
 
 RUN [ "cross-build-end" ]
 
@@ -30,4 +24,4 @@ RUN [ "cross-build-end" ]
 EXPOSE 3000
 
 # run it
-ENTRYPOINT ["/app/bin/start"]
+ENTRYPOINT ["/app/run_metabase.sh"]

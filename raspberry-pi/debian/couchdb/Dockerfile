@@ -24,7 +24,7 @@ RUN [ "cross-build-start" ]
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-               libmozjs185-1.0 \
+               curl libmozjs185-1.0 \
                libc6 libcurl3 libgcc1 libicu57 \
                libssl1.0.2 libstdc++6 libtinfo5 \
     && rm -rf /var/lib/apt/lists/*
